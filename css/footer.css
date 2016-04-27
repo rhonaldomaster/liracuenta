@@ -1,0 +1,9 @@
+.footer{
+  bottom:0;
+  left: 0;
+  height: 76px;
+  position:absolute;
+  width:100%;
+}
+.footer-link{color: #FFFFFF;}
+.footer-link:hover{color: #CC6600;}

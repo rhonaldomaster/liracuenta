@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Liracuenta - Haciendo las finanzas divertidas">
+    <meta name="author" content="rhonaldomaster (https://github.com/rhonaldomaster)">
+    <title>Liracuenta - Haciendo las finanzas divertidas</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/lobibox.min.css" rel="stylesheet">
+    <link href="css/common.css" rel="stylesheet">
+    <link href="css/header.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/footer.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top principal" role="navigation">
+      <div class="navbar-header">
+        <a class="navbar-brand nav-link" href="index.html">Liracuenta</a>
+      </div>
+    </nav>
+    <div class="main container js-main">
+      <nav class="m-t-s">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#resumen" data-toggle="tab">Resumen</a></li>
+          <li><a href="#acciones" data-toggle="tab">Admin</a></li>
+          <li><a href="#reportes" data-toggle="tab">Reporte</a></li>
+        </ul>
+      </nav>
+      <div class="tab-content m-b-m">
+        <section id="resumen" class="resumen tab-pane fade in active">
+          <h1>Balance general</h1>
+          <div class="table-responsive m-t-s">
+            <table class="table table-condensed table-bordered">
+              <tr>
+                <th>Balance d&iacute;a</th>
+                <td class="align-right js-day-resume">-</td>
+              </tr>
+              <tr>
+                <th>Balance semana</th>
+                <td class="align-right js-week-resume">-</td>
+              </tr>
+              <tr>
+                <th>Balance mes</th>
+                <td class="align-right js-month-resume">-</td>
+              </tr>
+            </table>
+          </div>
+        </section>
+        <section id="acciones" class="tab-pane fade">
+          <h1>Acciones</h1>
+          <nav class="m-t-s">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#transaccion" data-toggle="tab">Transacci&oacute;n</a></li>
+              <li><a href="#reinicio" data-toggle="tab">Reinicio</a></li>
+            </ul>
+          </nav>
+          <div class="tab-content m-b-m">
+            <div id="transaccion" class="tab-pane fade in active m-t-s">
+              <div class="m-t-s input-group">
+                <span class="input-group-addon">$</span>
+                <input type="number" class="form-control js-valor" value="0">
+              </div>
+              <div class="m-t-s">
+                <button type="button" class="btn btn-primary btn-block js-ingreso">Registrar Ingreso</button>
+              </div>
+              <div class="m-t-s">
+                <button type="button" class="btn btn-warning btn-block js-gasto">Registrar Gasto</button>
+              </div>
+            </div>
+            <div id="reinicio" class="tab-pane fade m-t-s">
+              <span class="label label-danger">Zona de peligro</span>
+              <button type="button" class="btn btn-danger btn-block m-t-s js-reiniciar">Reiniciar base de datos</button>
+            </div>
+          </div>
+        </section>
+        <section id="reportes" class="tab-pane fade">
+          <h1>Reportes</h1>
+          <div class="btn-group m-t-s">
+            <button type="button" class="btn btn-default js-vista-dia">Vista d&iacute;a</button>
+            <button type="button" class="btn btn-default js-vista-semana">Vista semana</button>
+            <button type="button" class="btn btn-default js-vista-mes">Vista mes</button>
+          </div>
+          <div class="js-reporte"></div>
+        </section>
+      </div>
+      <!-- <footer class="footer principal p-l-s p-r-s p-t-s p-b-s">
+        &copy; Liracuenta - Por <a href="https://github.com/rhonaldomaster" class="footer-link">rhonaldomaster</a>
+      </footer> -->
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/handlebars.js"></script>
+    <script src="js/accounting.min.js"></script>
+    <script src="js/lobibox.min.js"></script>
+    <script src="js/liracuenta.js"></script>
+    <script id="fila-reporte" type="text/x-handlebars-template">
+      <tr class="{{clase}}"><td>{{fecha}}</td><td class="align-right">{{valor}}</td></tr>
+    </script>
+    <script id="tabla-reporte" type="text/x-handlebars-template">
+      <section class="js-reporte">
+        <h2>Reporte <span class="js-tipo-reporte">{{{tipo}}}</span></h2>
+        <div class="table-responsive m-t-s">
+          <table class="table table-condensed table-bordered">
+            <thead><tr><th>Fecha registro</th><th>Valor</th></tr></thead>
+            <tbody>{{{filas}}}</tbody>
+            <tfoot><tr><td><b>Total</b></td><td class="align-right {{cltotal}}">{{total}}</td></tr></tfoot>
+          </table>
+        </div>
+      </section>
+    </script>
+  </body>
+</html>

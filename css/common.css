@@ -1,0 +1,39 @@
+/* Estilos aplicables en varios lugares */
+.p-l-s{padding-left: 15px;}
+.p-r-s{padding-right: 15px;}
+.p-t-s{padding-top: 15px;}
+.p-b-s{padding-bottom: 15px;}
+.m-t-s{margin-top: 15px;}
+.m-b-s{margin-bottom: 15px;}
+.p-l-m{padding-left: 30px;}
+.p-r-m{padding-right: 30px;}
+.p-t-m{padding-top: 30px;}
+.p-b-m{padding-bottom: 30px;}
+.m-t-m{margin-top: 30px;}
+.m-b-m{margin-bottom: 30px;}
+.pos-r{position: relative;}
+.pos-a{position: absolute;}
+.btn-primary{background-color: #4775D1;}
+.btn-secondary{background-color: #CC6600;}
+.btn-terciary{background-color: #CC00CC;}
+.flex{display: flex;}
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+.principal{
+  background-color: #4775D1 !important;
+  color: #FFFFFF !important;
+}
+.resaltado{
+  background-color: #CC6600 !important;
+  color: #FFFFFF !important;
+}
+.terciario{
+  background-color: #CC00CC !important;
+  color: #FFFFFF !important;
+}
+.open>a{background-color: #CC6600 !important;}
+.align-left{text-align: left;}
+.align-right{text-align: right;}
+.inline{display: inline !important;}
