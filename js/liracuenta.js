@@ -15,17 +15,15 @@ var liracuenta = (function () {
       tr.createIndex('by_month','mes',{unique:false});
     };
     db.onsuccess = function (e) {
-      //alert('Base de datos cargada correctamente');
+      console.log('Base de datos cargada correctamente');
     };
     db.onerror = function (e) {
-      Lobibox.notify('error',{size:'mini',rounded:true,msg:"Error cargando la base de datos"});
+      Lobibox.notify('error',{size:'mini',rounded:true,msg:'Error cargando la base de datos'});
     };
   };
   var genDate = function (f) {
-    var m = f.getMonth()+1;
-    var d = f.getDate();
-    var y = f.getFullYear();
-    return y+"-"+((m<10?'0':'')+m)+"-"+((d<10?'0':'')+d);
+    var m = f.getMonth()+1, d = f.getDate(), y = f.getFullYear();
+    return y+'-'+((m<10?'0':'')+m)+'-'+((d<10?'0':'')+d);
   };
   var getLastWeek = function () {
     var today = new Date();
@@ -46,7 +44,7 @@ var liracuenta = (function () {
     var obj = data.objectStore('transacciones');
     var objrequest = obj.clear();
     objrequest.onsuccess = function (e) {
-      Lobibox.notify('success',{size:'mini',rounded:true,msg:"Datos eliminados"});
+      Lobibox.notify('success',{size:'mini',rounded:true,msg:'Datos eliminados'});
       openDatabase();
       setTimeout(function () {
         balanceTotal();
@@ -63,7 +61,7 @@ var liracuenta = (function () {
       Lobibox.notify('error',{size:'mini',rounded:true,msg:request.error.name + '\n\n' + request.error.message});
     };
     data.oncomplete = function (e) {
-      Lobibox.notify('success',{size:'mini',rounded:true,msg:"Transaccion ingresada"});
+      Lobibox.notify('success',{size:'mini',rounded:true,msg:'Transaccion ingresada'});
       balanceTotal();
     };
   };
@@ -81,13 +79,13 @@ var liracuenta = (function () {
     data.oncomplete = function () {
       var total = 0;
       var clase = ['d&iacute;a','semana','mes'];
-      var html = "";
-      var template = Handlebars.compile($("#fila-reporte").html());
+      var html = '';
+      var template = Handlebars.compile($('#fila-reporte').html());
       var strdia = (tipo==0?getToday():(tipo==1?getLastWeek():getLastMonth()));
       for(var k in elements){
         var obj = elements[k];
         if(obj.valor!=null){
-          var strfecha = obj.anio+"-"+(obj.mes<10?'0':'')+obj.mes+"-"+(obj.dia<10?'0':'')+obj.dia;
+          var strfecha = obj.anio+'-'+(obj.mes<10?'0':'')+obj.mes+'-'+(obj.dia<10?'0':'')+obj.dia;
           if(tipo==0 && strdia == strfecha){
             total += (obj.valor*1*obj.signo);
             html += template({
@@ -106,7 +104,7 @@ var liracuenta = (function () {
           }
         }
       }
-      template = Handlebars.compile($("#tabla-reporte").html());
+      template = Handlebars.compile($('#tabla-reporte').html());
       var cod = template({tipo:clase[tipo],filas:html,cltotal:total<=0?(total==0?'warning':'danger'):'success',total:accounting.formatMoney(total)});
       document.querySelector('.js-reporte').innerHTML = cod;
     };
@@ -129,7 +127,7 @@ var liracuenta = (function () {
       var strdia = (tipo==0?getToday():(tipo==1?getLastWeek():getLastMonth()));
       for(var k in elements){
         var obj = elements[k];
-        var strfecha = obj.anio+"-"+(obj.mes<10?'0':'')+obj.mes+"-"+(obj.dia<10?'0':'')+obj.dia;
+        var strfecha = obj.anio+'-'+(obj.mes<10?'0':'')+obj.mes+'-'+(obj.dia<10?'0':'')+obj.dia;
         if(obj.valor!=null){
           if(tipo==0 && strdia == strfecha) total += (obj.valor*1*obj.signo);
           else if(tipo>=1 && strdia <= strfecha) total += (obj.valor*1*obj.signo);
@@ -168,7 +166,7 @@ var liracuenta = (function () {
     });
     $('.js-reiniciar').off('click').on('click',function () {
       var cnfr = Lobibox.confirm({
-        title:"Esta seguro?",msg: "Esta accion no se puede deshacer",
+        title:'Esta seguro?',msg: 'Esta accion no se puede deshacer',
         buttons:{
           ok: {'class': 'btn btn-info',text: 'Aceptar',closeOnClick: true},
           cancel: {'class': 'btn btn-danger',text: 'Cancelar',closeOnClick: true}
