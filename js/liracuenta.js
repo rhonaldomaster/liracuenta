@@ -46,9 +46,7 @@ var liracuenta = (function () {
     objrequest.onsuccess = function (e) {
       Lobibox.notify('success',{size:'mini',rounded:true,msg:'Datos eliminados'});
       openDatabase();
-      setTimeout(function () {
-        balanceTotal();
-      },1000);
+      balanceTotal();
     };
   };
   var ingresarTransaccion = function (valor,tipo) {
@@ -66,6 +64,7 @@ var liracuenta = (function () {
     };
   };
   var listarTipo = function (tipo) {
+    document.querySelector('.js-reporte').innerHTML = 'Procesando...';
     var pointer = db.result;
     var data = pointer.transaction(['transacciones'],'readonly');
     var object = data.objectStore('transacciones');
@@ -80,9 +79,9 @@ var liracuenta = (function () {
       var total = 0;
       var clase = ['d&iacute;a','semana','mes'];
       var html = '';
-      var template = Handlebars.compile($('#fila-reporte').html());
+      var template = Handlebars.compile(document.querySelector('#fila-reporte').innerHTML);
       var strdia = (tipo==0?getToday():(tipo==1?getLastWeek():getLastMonth()));
-      for(var k in elements){
+      for(var k=0;k<elements.length;k++){
         var obj = elements[k];
         if(obj.valor!=null){
           var strfecha = obj.anio+'-'+(obj.mes<10?'0':'')+obj.mes+'-'+(obj.dia<10?'0':'')+obj.dia;
@@ -104,7 +103,11 @@ var liracuenta = (function () {
           }
         }
       }
-      template = Handlebars.compile($('#tabla-reporte').html());
+      if(html==''){
+        template = Handlebars.compile(document.querySelector('#fila-vacia').innerHTML);
+        html = template({});
+      }
+      template = Handlebars.compile(document.querySelector('#tabla-reporte').innerHTML);
       var cod = template({tipo:clase[tipo],filas:html,cltotal:total<=0?(total==0?'warning':'danger'):'success',total:accounting.formatMoney(total)});
       document.querySelector('.js-reporte').innerHTML = cod;
     };
@@ -123,9 +126,9 @@ var liracuenta = (function () {
     };
     data.oncomplete = function () {
       var clase = ['.js-day-resume','.js-week-resume','.js-month-resume'];
-      var $elem = $(clase[tipo]);
+      var elem = document.querySelector(clase[tipo]);
       var strdia = (tipo==0?getToday():(tipo==1?getLastWeek():getLastMonth()));
-      for(var k in elements){
+      for(var k=0;k<elements.length;k++){
         var obj = elements[k];
         var strfecha = obj.anio+'-'+(obj.mes<10?'0':'')+obj.mes+'-'+(obj.dia<10?'0':'')+obj.dia;
         if(obj.valor!=null){
@@ -133,38 +136,43 @@ var liracuenta = (function () {
           else if(tipo>=1 && strdia <= strfecha) total += (obj.valor*1*obj.signo);
         }
       }
-      $elem.html(accounting.formatMoney(total));
-      if(total<0) $elem.removeClass('success').removeClass('warning').addClass('danger');
-      else if(total==0) $elem.removeClass('success').removeClass('danger').addClass('warning');
-      else $elem.removeClass('warning').removeClass('danger').addClass('success');
+      elem.innerHTML = accounting.formatMoney(total);
+      if(total<0) elem.className = 'danger';
+      else if(total==0) elem.className = 'warning';
+      else elem.className = 'success';
+      elem.className += ' align-right ' + (clase[tipo].substr(1));
     };
   };
   var balanceTotal = function () {
-    balanceTipo(0);
-    balanceTipo(1);
-    balanceTipo(2);
+    setTimeout(function () {
+      balanceTipo(0);
+      balanceTipo(1);
+      balanceTipo(2);
+    },1000);
   };
   var bindEvents = function () {
-    $('.js-vista-dia').off('click').on('click',function () {
+    document.querySelector('.js-vista-dia').onclick = function () {
       listarTipo(0);
-    });
-    $('.js-vista-semana').off('click').on('click',function () {
+    };
+    document.querySelector('.js-vista-semana').onclick = function () {
       listarTipo(1);
-    });
-    $('.js-vista-mes').off('click').on('click',function () {
+    };
+    document.querySelector('.js-vista-mes').onclick = function () {
       listarTipo(2);
-    });
-    $('.js-ingreso').off('click').on('click',function () {
-      var val = $('.js-valor').val();
-      $('.js-valor').val('0');
+    };
+    document.querySelector('.js-ingreso').onclick = function () {
+      var elem = document.querySelector('.js-valor');
+      var val = elem.value;
+      elem.value = 0;
       if(val!='' && val!=null) ingresarTransaccion(val,1);
-    });
-    $('.js-gasto').off('click').on('click',function () {
-      var val = $('.js-valor').val();
-      $('.js-valor').val('0');
+    };
+    document.querySelector('.js-gasto').onclick = function () {
+      var elem = document.querySelector('.js-valor');
+      var val = elem.value;
+      elem.value = 0;
       if(val!='' && val!=null) ingresarTransaccion(val,-1);
-    });
-    $('.js-reiniciar').off('click').on('click',function () {
+    };
+    document.querySelector('.js-reiniciar').onclick = function () {
       var cnfr = Lobibox.confirm({
         title:'Esta seguro?',msg: 'Esta accion no se puede deshacer',
         buttons:{
@@ -175,15 +183,13 @@ var liracuenta = (function () {
           if(type=='ok') resetDB();
         }
       });
-    });
-    setTimeout(function () {
-      balanceTotal();
-    },1000);
+    };
+    balanceTotal();
   };
   return {
     init: init
   };
 })();
-$(document).ready(function () {
-  liracuenta.init();
+document.addEventListener("DOMContentLoaded", function(event) {
+    liracuenta.init();
 });

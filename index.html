@@ -60,7 +60,7 @@
             <div id="transaccion" class="tab-pane fade in active m-t-s">
               <div class="m-t-s input-group">
                 <span class="input-group-addon">$</span>
-                <input type="number" class="form-control js-valor" value="0">
+                <input type="number" class="form-control align-right js-valor" value="0">
               </div>
               <div class="m-t-s">
                 <button type="button" class="btn btn-primary btn-block js-ingreso">Registrar Ingreso</button>
@@ -77,10 +77,10 @@
         </section>
         <section id="reportes" class="tab-pane fade">
           <h1>Reportes</h1>
-          <div class="btn-group m-t-s">
-            <button type="button" class="btn btn-default js-vista-dia">Vista d&iacute;a</button>
-            <button type="button" class="btn btn-default js-vista-semana">Vista semana</button>
-            <button type="button" class="btn btn-default js-vista-mes">Vista mes</button>
+          <div class="btn-group m-t-s" data-toggle="buttons">
+            <label class="btn btn-primary js-vista-dia"><input type="radio" name="reports">Vista d&iacute;a</label>
+            <label class="btn btn-primary js-vista-semana"><input type="radio" name="reports">Vista semana</label>
+            <label class="btn btn-primary js-vista-mes"><input type="radio" name="reports">Vista mes</label>
           </div>
           <div class="js-reporte"></div>
         </section>
@@ -98,11 +98,14 @@
     <script id="fila-reporte" type="text/x-handlebars-template">
       <tr class="{{clase}}"><td>{{fecha}}</td><td class="align-right">{{valor}}</td></tr>
     </script>
+    <script id="fila-vacia" type="text/x-handlebars-template">
+      <tr><td colspan="2" class="align-center">No hay registros</td></tr>
+    </script>
     <script id="tabla-reporte" type="text/x-handlebars-template">
       <section class="js-reporte">
         <h2>Reporte <span class="js-tipo-reporte">{{{tipo}}}</span></h2>
         <div class="table-responsive m-t-s">
-          <table class="table table-condensed table-bordered">
+          <table class="table table-condensed table-bordered table-responsive">
             <thead><tr><th>Fecha registro</th><th>Valor</th></tr></thead>
             <tbody>{{{filas}}}</tbody>
             <tfoot><tr><td><b>Total</b></td><td class="align-right {{cltotal}}">{{total}}</td></tr></tfoot>
