@@ -4,6 +4,7 @@ var liracuenta = (function () {
   var init = function () {
     openDatabase();
     bindEvents();
+    balanceTotal();
   };
   var openDatabase = function () {
     idb = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
@@ -27,7 +28,7 @@ var liracuenta = (function () {
   };
   var getLastWeek = function () {
     var today = new Date();
-    var last = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+    var last = new Date(today.getFullYear(), today.getMonth(), today.getDate()-7);
     return genDate(last);
   };
   var getLastMonth = function () {
@@ -83,9 +84,9 @@ var liracuenta = (function () {
       var strdia = (tipo==0?getToday():(tipo==1?getLastWeek():getLastMonth()));
       for(var k=0;k<elements.length;k++){
         var obj = elements[k];
-        if(obj.valor!=null){
+        if(obj!=null && obj.valor!=null){
           var strfecha = obj.anio+'-'+(obj.mes<10?'0':'')+obj.mes+'-'+(obj.dia<10?'0':'')+obj.dia;
-          if(tipo==0 && strdia == strfecha){
+          if(tipo==0 && strdia==strfecha){
             total += (obj.valor*1*obj.signo);
             html += template({
               clase: obj.signo==-1?'danger':'success',
@@ -93,7 +94,7 @@ var liracuenta = (function () {
               valor: accounting.formatMoney(obj.valor)
             });
           }
-          else if(tipo>=1 && strdia <= strfecha){
+          else if(tipo>=1 && strdia<=strfecha){
             total += (obj.valor*1*obj.signo);
             html += template({
               clase: obj.signo==-1?'danger':'success',
@@ -132,8 +133,8 @@ var liracuenta = (function () {
         var obj = elements[k];
         var strfecha = obj.anio+'-'+(obj.mes<10?'0':'')+obj.mes+'-'+(obj.dia<10?'0':'')+obj.dia;
         if(obj.valor!=null){
-          if(tipo==0 && strdia == strfecha) total += (obj.valor*1*obj.signo);
-          else if(tipo>=1 && strdia <= strfecha) total += (obj.valor*1*obj.signo);
+          if(tipo==0 && strdia==strfecha) total += (obj.valor*1*obj.signo);
+          else if(tipo>=1 && strdia<=strfecha) total += (obj.valor*1*obj.signo);
         }
       }
       elem.innerHTML = accounting.formatMoney(total);
@@ -184,7 +185,6 @@ var liracuenta = (function () {
         }
       });
     };
-    balanceTotal();
   };
   return {
     init: init
